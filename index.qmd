@@ -1,0 +1,21 @@
+---
+title: "Sara Antentas Oliveras"
+image: "images/profile_pic.jpeg"
+about:
+  template: jolla
+  links:
+    - icon: envelope
+      href: mailto:santentasoliveras@ucsd.edu
+    - icon: linkedin
+      href: https://www.linkedin.com/in/sara-antentas-oliveras/
+---
+
+# Current:
+
+- MS in Business Analytics at Rady School of Management
+- Teacher Assistant in the Spanish department at UCSD
+
+# Education:
+
+- Bachelor's degree in Mathematics
+- Bachelor's degree in Physics
