@@ -1,7 +1,6 @@
 project:
   type: website
-  resources:
-    - files/**
+  output-dir: docs
 
 
 website:
@@ -9,9 +8,8 @@ website:
   navbar:
     left:
       - href: index.qmd
-        text: Home
-      - href: resume.qmd
-        text: Resume
+        text: About
+      - resume.qmd
 
 format:
   html:
@@ -20,6 +18,3 @@ format:
       - brand
     css: styles.css
     toc: true
-
-
-

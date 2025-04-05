@@ -2,6 +2,4 @@
 title: "Resume"
 ---
 
-## Resume
-
-[📄 Download PDF file.](files/Sara_Antentas_Oliveras-Resume.pdf){target="_blank"}
+{{< pdf resume/resume.pdf width=100% height=800 >}}
