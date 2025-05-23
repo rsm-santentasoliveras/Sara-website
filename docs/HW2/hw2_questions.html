@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Sara Antentas Oliveras">
-<meta name="dcterms.date" content="2025-05-06">
+<meta name="dcterms.date" content="2025-05-21">
 
 <title>Poisson Regression Examples – Sara Antentas Oliveras</title>
 <style>
@@ -136,7 +136,7 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -220,7 +220,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 6, 2025</p>
+      <p class="date">May 21, 2025</p>
     </div>
   </div>
   
@@ -242,7 +242,7 @@ window.Quarto = {
 <section id="data" class="level3">
 <h3 class="anchored" data-anchor-id="data">Data</h3>
 <p>We compare the number of patents held by firms that are Blueprinty customers vs.&nbsp;non-customers.</p>
-<div id="791c3e64" class="cell" data-execution_count="1">
+<div id="6dcf9fb8" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>blueprinty <span class="op">=</span> pd.read_csv(<span class="st">'blueprinty.csv'</span>)</span>
@@ -304,7 +304,7 @@ window.Quarto = {
 </div>
 </div>
 <p>The following histogram shows that Blueprinty customers (orange bars) tend to have slightly more patents than non-customers. The distribution is right-skewed for both groups, but the customer group has more firms with 5+ patents. Additionally, the mean number of patents for non-customers is 3.47 and for customers is 4.13.</p>
-<div id="8c8593ee" class="cell" data-execution_count="2">
+<div id="d599b5fa" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -337,7 +337,7 @@ Name: patents, dtype: float64</code></pre>
 </div>
 <p><strong>Observation:</strong> There is a moderate difference in average patent count between customers and non-customers. This suggests that Blueprinty customers may be more successful in generating patents — though this raw difference may reflect underlying differences (e.g.&nbsp;age, region), not necessarily a causal effect of using the software.</p>
 <p>For this reason, since Blueprinty customers are not selected at random, it may be important to account for systematic differences in the age and regional location of customers vs non-customers.</p>
-<div id="be866958" class="cell" data-execution_count="3">
+<div id="a9884796" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Boxplot for firm age by customer status</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>sns.boxplot(x<span class="op">=</span><span class="st">"iscustomer"</span>, y<span class="op">=</span><span class="st">"age"</span>, data<span class="op">=</span>blueprinty)</span>
@@ -430,7 +430,7 @@ f(Y_i \mid \lambda) = \frac{e^{-\lambda} \lambda^{Y_i}}{Y_i!}
 \ell(\lambda) = \log \mathcal{L}(\lambda) = \sum_{i=1}^n \left[ y_i \log(\lambda) - \lambda - \log(y_i!) \right]
 \]</span></p>
 <p>Next, we define the log-likelihood for the Poisson distribution as a function of a single parameter, <span class="math inline">\(\lambda\)</span>, and the observed data, <span class="math inline">\(Y\)</span>. This function is maximized to estimate the most likely value of <span class="math inline">\(\lambda\)</span> that could have generated the data:</p>
-<div id="0d45a4c4" class="cell" data-execution_count="4">
+<div id="035a5e90" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.special <span class="im">import</span> gammaln</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -442,7 +442,7 @@ f(Y_i \mid \lambda) = \frac{e^{-\lambda} \lambda^{Y_i}}{Y_i!}
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> log_lik  <span class="co"># negative for use with minimization</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We then evaluate this function over a range of candidate values for <span class="math inline">\(\lambda\)</span>, using the observed number of patents in the dataset. This helps us visually identify the value of <span class="math inline">\(\lambda\)</span> that maximizes the log-likelihood:</p>
-<div id="d2a09924" class="cell" data-execution_count="5">
+<div id="7580f592" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> blueprinty[<span class="st">"patents"</span>].values</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>lambda_vals <span class="op">=</span> np.linspace(<span class="fl">0.1</span>, <span class="dv">10</span>, <span class="dv">200</span>)</span>
@@ -488,7 +488,7 @@ f(Y_i \mid \lambda) = \frac{e^{-\lambda} \lambda^{Y_i}}{Y_i!}
 \hat{\lambda}_{\text{MLE}} = 3.685
 \]</span></p>
 <p>This matches the sample mean of the observed patent counts, which aligns with our analytical derivation. The optimizer successfully found the value of <span class="math inline">\(\lambda\)</span> that maximizes the likelihood of observing the data under a Poisson model.</p>
-<div id="ec7bb030" class="cell" data-execution_count="6">
+<div id="5b1757f9" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.optimize <span class="im">import</span> minimize</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the negative log-likelihood for use with optimizer</span></span>
@@ -521,7 +521,7 @@ f(Y_i \mid \lambda) = \frac{e^{-\lambda} \lambda^{Y_i}}{Y_i!}
 \ell(\beta) = \sum_{i=1}^n \left[ y_i (X_i' \beta) - \exp(X_i' \beta) - \log(y_i!) \right]
 \]</span></p>
 <p>We implement this in Python by defining a function that takes the coefficient vector <span class="math inline">\(\beta\)</span>, the observed count data <span class="math inline">\(Y\)</span>, and the covariate matrix <span class="math inline">\(X\)</span>:</p>
-<div id="65ca01f8" class="cell" data-execution_count="7">
+<div id="4ef59870" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.special <span class="im">import</span> gammaln</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -537,7 +537,7 @@ f(Y_i \mid \lambda) = \frac{e^{-\lambda} \lambda^{Y_i}}{Y_i!}
 <li>The first column is a constant (1’s), enabling an intercept in the model.</li>
 <li>Next are: <em>age</em>, <em>age²</em>, dummy variables for all but one region (reference category), and a binary indicator for whether the firm is a Blueprinty customer.</li>
 </ul>
-<div id="28205113" class="cell" data-execution_count="8">
+<div id="f0c252ea" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> patsy</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create design matrix with intercept, age, age², region dummies, and customer</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>y, X <span class="op">=</span> patsy.dmatrices(<span class="st">'patents ~ age + I(age**2) + C(region) + iscustomer'</span>, data<span class="op">=</span>blueprinty, return_type<span class="op">=</span><span class="st">'dataframe'</span>)</span>
@@ -635,7 +635,7 @@ Results using Python sm.GLM() function
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="364b9853" class="cell" data-execution_count="9">
+<div id="d130dd54" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Poisson GLM with log link</span></span>
@@ -652,8 +652,8 @@ Model:                            GLM   Df Residuals:                     1492
 Model Family:                 Poisson   Df Model:                            7
 Link Function:                    Log   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -3258.1
-Date:                Tue, 06 May 2025   Deviance:                       2143.3
-Time:                        21:35:46   Pearson chi2:                 2.07e+03
+Date:                Wed, 21 May 2025   Deviance:                       2143.3
+Time:                        14:29:32   Pearson chi2:                 2.07e+03
 No. Iterations:                     5   Pseudo R-squ. (CS):             0.1360
 Covariance Type:            nonrobust                                         
 ==========================================================================================
@@ -709,7 +709,7 @@ iscustomer                 0.2076      0.031      6.719      0.000       0.147  
 <li><span class="math inline">\(X_1\)</span>: All firms set to <code>iscustomer = 1</code> (Blueprinty users)</li>
 </ul>
 <p>Using our fitted model, we compute the expected number of patents under both scenarios:</p>
-<div id="b91ed66f" class="cell" data-execution_count="10">
+<div id="7e43fc51" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>X_0 <span class="op">=</span> X.copy()</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>X_1 <span class="op">=</span> X.copy()</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -802,7 +802,7 @@ Python Code for Data Preparation
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="cc246feb" class="cell" data-execution_count="11">
+<div id="5ab5858d" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>airbnb <span class="op">=</span> pd.read_csv(<span class="st">'airbnb.csv'</span>)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -841,7 +841,7 @@ Python Code for Data Preparation
 <span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Define target variable</span></span>
 <span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> airbnb_clean[<span class="st">"number_of_reviews"</span>].values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/tmp/ipykernel_80317/2696647610.py:14: SettingWithCopyWarning:
+<pre><code>/tmp/ipykernel_37077/2696647610.py:14: SettingWithCopyWarning:
 
 
 A value is trying to be set on a copy of a slice from a DataFrame.
@@ -880,7 +880,7 @@ Python Code for Poisson Regression
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="340e8c1c" class="cell" data-execution_count="12">
+<div id="ee06e1b1" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure all columns in X are numeric</span></span>
@@ -900,8 +900,8 @@ Model:                            GLM   Df Residuals:                    30150
 Model Family:                 Poisson   Df Model:                            9
 Link Function:                    Log   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:            -5.2900e+05
-Date:                Tue, 06 May 2025   Deviance:                   9.3653e+05
-Time:                        21:35:47   Pearson chi2:                 1.41e+06
+Date:                Wed, 21 May 2025   Deviance:                   9.3653e+05
+Time:                        14:29:32   Pearson chi2:                 1.41e+06
 No. Iterations:                     6   Pseudo R-squ. (CS):             0.5649
 Covariance Type:            nonrobust                                         
 =============================================================================================

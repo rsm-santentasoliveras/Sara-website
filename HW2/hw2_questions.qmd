@@ -514,3 +514,4 @@ Our findings suggest that:
 - Listings with more bedrooms and those that are instantly bookable receive significantly more reviews.
 - Shared accommodations and listings with higher "value" ratings receive fewer reviews,  perhaps reflecting niche appeal or selection effects.
 - The model explains a considerable amount of variation in review counts (Pseudo R² = 0.5649), indicating strong predictive power.
+
